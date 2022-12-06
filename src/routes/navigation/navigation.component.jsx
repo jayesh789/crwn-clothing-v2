@@ -18,7 +18,7 @@ const Navigation = () => {
                         SHOP
                     </Link>              {/*it is same as anchor tag */}
     
-                    <Link className="nav-link" to="/sign-in">
+                    <Link className="nav-link" to="/auth">
                         Sign In
                     </Link>
                 </div>
