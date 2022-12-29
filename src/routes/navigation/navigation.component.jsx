@@ -1,20 +1,22 @@
-import { Fragment } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Fragment } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { useSelector } from "react-redux";
+import CartIcon from '../../components/cart-icon/cart-icon.component';
+import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 
-import CartIcon from "../../components/cart-icon/cart-icon.component";
-import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
+import { selectCurrentUser } from '../../store/user/user.selector';
+import { selectIsCartOpen } from '../../store/cart/cart.selector';
 
-import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
+import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
+import { signOutUser } from '../../utils/firebase/firebase.utils';
 
-import { selectIsCartOpen } from "../../store/cart/cart.selector";
-import { selectCurrentUser } from "../../store/user/user.selector";
-
-import { signOutUser } from "../../utils/firebase/firebase.util"
-
-import { NavigationContainer, LogoContainer, NavLinks, NavLink } from "./navigation.styles";
-
+import {
+  NavigationContainer,
+  NavLinks,
+  NavLink,
+  LogoContainer,
+} from './navigation.styles';
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
@@ -24,7 +26,7 @@ const Navigation = () => {
     <Fragment>
       <NavigationContainer>
         <LogoContainer to='/'>
-          <CrwnLogo />
+          <CrwnLogo className='logo' />
         </LogoContainer>
         <NavLinks>
           <NavLink to='/shop'>SHOP</NavLink>
@@ -41,7 +43,7 @@ const Navigation = () => {
         {isCartOpen && <CartDropdown />}
       </NavigationContainer>
       <Outlet />
-    </Fragment> 
+    </Fragment>
   );
 };
 
