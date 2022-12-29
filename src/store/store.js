@@ -1,4 +1,4 @@
-import { compose, createStore, applyMiddleware } from 'redux';
+import { compose, legacy_createStore, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import logger from 'redux-logger';
@@ -27,7 +27,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const composedEnhancers = composeEnhancer(applyMiddleware(...middleWares));
 
-export const store = createStore(
+export const store = legacy_createStore(
   persistedReducer,
   undefined,
   composedEnhancers

@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
   signInWithRedirect,
@@ -8,33 +8,34 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-} from 'firebase/auth';
+} from "firebase/auth";
 import {
   getFirestore,
-  doc,
-  getDoc,
-  setDoc,
+  doc, //retrive documents inside firebase database
+  getDoc, //to get the data
+  setDoc, //to set the data
   collection,
   writeBatch,
   query,
-  getDocs,
-} from 'firebase/firestore';
+  getDocs
+} from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk',
-  authDomain: 'crwn-clothing-db-98d4d.firebaseapp.com',
-  projectId: 'crwn-clothing-db-98d4d',
-  storageBucket: 'crwn-clothing-db-98d4d.appspot.com',
-  messagingSenderId: '626766232035',
-  appId: '1:626766232035:web:506621582dab103a4d08d6',
+  apiKey: "AIzaSyABMfUs4UoBwtpt729Oswy_lrxnVS94utU",
+  authDomain: "crwn-clothing-db-d4373.firebaseapp.com",
+  projectId: "crwn-clothing-db-d4373",
+  storageBucket: "crwn-clothing-db-d4373.appspot.com",
+  messagingSenderId: "686759930002",
+  appId: "1:686759930002:web:f70aab5cc5d2dfa9071e4b",
 };
 
+// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
 
 googleProvider.setCustomParameters({
-  prompt: 'select_account',
+  prompt: "select_account",
 });
 
 export const auth = getAuth();
@@ -47,8 +48,7 @@ export const db = getFirestore();
 
 export const addCollectionAndDocuments = async (
   collectionKey,
-  objectsToAdd,
-  field
+  objectsToAdd
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -59,16 +59,18 @@ export const addCollectionAndDocuments = async (
   });
 
   await batch.commit();
-  console.log('done');
+  console.log("done");
 };
 
 export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, 'categories');
+  const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
-};
+  
+  
+}
 
 export const createUserDocumentFromAuth = async (
   userAuth,
@@ -76,9 +78,11 @@ export const createUserDocumentFromAuth = async (
 ) => {
   if (!userAuth) return;
 
-  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userDocRef = doc(db, "users", userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
+
+  //if user data does not exists
 
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
@@ -92,9 +96,11 @@ export const createUserDocumentFromAuth = async (
         ...additionalInformation,
       });
     } catch (error) {
-      console.log('error creating the user', error.message);
+      console.log("error creating the user ", error);
     }
   }
+
+  //if user data exists
 
   return userDocRef;
 };
